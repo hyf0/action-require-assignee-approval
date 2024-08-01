@@ -2,14 +2,27 @@ const github = require('@actions/github')
 const core = require('@actions/core')
 const R = require('remeda')
 
+/**
+ * Get the input value from the workflow file.
+ * @param {string} name The name of the input.
+ * @param {boolean} defaultValue The default value of the input.
+ * @returns {boolean} The value of the input.
+ */
+function getBooleanInput(name, defaultValue) {
+  const value = core.getInput(name)
+  if (value === '') {
+    return defaultValue
+  }
+  return value === 'true'
+}
+
 exports.run = async function run() {
-  // This should be a token with access to your repository scoped in as a secret.
-  // The YML workflow will need to set myToken with the GitHub Secret Token
-  // myToken: ${{ secrets.GITHUB_TOKEN }}
-  // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
   const githubToken = process.env.GITHUB_TOKEN
 
-  const allowNoAssign = true
+  const config = {
+    allowNoAssign: getBooleanInput('allow-no-assign', true)
+  }
+
   const context = github.context
 
   if (!githubToken) {
@@ -18,15 +31,18 @@ exports.run = async function run() {
   }
 
   if (context.eventName !== 'pull_request' || !context.payload.pull_request) {
+    core.info('Bailout: Not a pull request.')
     return
-    // Assignee is only meaningful on PRs
   }
-
   const octokit = github.getOctokit(githubToken)
 
-  // You can also pass in additional options as a second parameter to getOctokit
-  // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
-  const { data: reviews } = await octokit.rest.pulls.listReviews()
+  const pullNumber = context.payload.pull_request.number
+
+  const { data: reviews } = await octokit.rest.pulls.listReviews({
+    pull_number: pullNumber,
+    owner: context.repo.owner,
+    repo: context.repo.repo
+  })
 
   const approvers = new Set(
     R.pipe(
@@ -37,33 +53,34 @@ exports.run = async function run() {
     )
   )
 
+  core.info(`Approvers: ${Array.from(approvers).join(', ')}`)
+
   const { data: pullRequest } = await octokit.rest.pulls.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    pull_number: context.payload.pull_request.number,
-    mediaType: {
-      format: 'diff'
-    }
+    pull_number: pullNumber
   })
 
-  if (!pullRequest.assignees) {
-    core.setFailed("Can't get assignees from pull request.")
+  const assignees = R.pipe(
+    pullRequest.assignees ?? [],
+    R.map(assignee => assignee.login)
+  )
+
+  if (assignees.length === 0 && !config.allowNoAssign) {
+    core.setFailed(
+      'No assignees found on pull request. And `allowNoAssign` is false.'
+    )
     return
   }
 
-  if (pullRequest.assignees.length === 0 && !allowNoAssign) {
-    core.setFailed('No assignees found on pull request.')
-    return
-  }
+  core.info(`Assignees: [${assignees}]`)
 
-  const assigneesNotApproved = pullRequest.assignees.filter(assignee =>
-    approvers.has(assignee.login)
+  const assigneesNotApproved = assignees.filter(
+    assignee => !approvers.has(assignee)
   )
 
   if (assigneesNotApproved.length > 0) {
-    core.setFailed(
-      `Require assignees ${assigneesNotApproved.map(assignee => assignee.login).join(', ')} to approved the PR.`
-    )
+    core.setFailed(`Require assignees ${assignees} to approved the PR.`)
     return
   }
 }

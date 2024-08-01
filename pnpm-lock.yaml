@@ -8,20 +8,17 @@ dependencies:
   '@actions/core':
     specifier: ^1.10.1
     version: 1.10.1
+  '@actions/github':
+    specifier: ^6.0.0
+    version: 6.0.0
   '@babel/core':
     specifier: ^7.24.9
     version: 7.25.2
   remeda:
     specifier: ^2.6.0
     version: 2.6.0
-  typescript:
-    specifier: ^5.5.4
-    version: 5.5.4
 
 devDependencies:
-  '@actions/github':
-    specifier: ^6.0.0
-    version: 6.0.0
   '@babel/eslint-parser':
     specifier: ^7.25.1
     version: 7.25.1(@babel/core@7.25.2)(eslint@8.57.0)
@@ -55,6 +52,9 @@ devDependencies:
   prettier:
     specifier: ^3.3.3
     version: 3.3.3
+  typescript:
+    specifier: ^5.5.4
+    version: 5.5.4
 
 packages:
   /@actions/core@1.10.1:
@@ -77,7 +77,7 @@ packages:
       '@octokit/core': 5.2.0
       '@octokit/plugin-paginate-rest': 9.2.1(@octokit/core@5.2.0)
       '@octokit/plugin-rest-endpoint-methods': 10.4.1(@octokit/core@5.2.0)
-    dev: true
+    dev: false
 
   /@actions/http-client@2.2.1:
     resolution:
@@ -87,6 +87,7 @@ packages:
     dependencies:
       tunnel: 0.0.6
       undici: 5.28.4
+    dev: false
 
   /@ampproject/remapping@2.3.0:
     resolution:
@@ -1743,6 +1744,7 @@ packages:
         integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
       }
     engines: { node: '>=14' }
+    dev: false
 
   /@github/browserslist-config@1.0.0:
     resolution:
@@ -2145,7 +2147,7 @@ packages:
         integrity: sha512-tY/msAuJo6ARbK6SPIxZrPBms3xPbfwBrulZe0Wtr/DIY9lje2HeV1uoebShn6mx7SjCHif6EjMvoREj+gZ+SA==
       }
     engines: { node: '>= 18' }
-    dev: true
+    dev: false
 
   /@octokit/core@5.2.0:
     resolution:
@@ -2161,7 +2163,7 @@ packages:
       '@octokit/types': 13.5.0
       before-after-hook: 2.2.3
       universal-user-agent: 6.0.1
-    dev: true
+    dev: false
 
   /@octokit/endpoint@9.0.5:
     resolution:
@@ -2172,7 +2174,7 @@ packages:
     dependencies:
       '@octokit/types': 13.5.0
       universal-user-agent: 6.0.1
-    dev: true
+    dev: false
 
   /@octokit/graphql@7.1.0:
     resolution:
@@ -2184,21 +2186,21 @@ packages:
       '@octokit/request': 8.4.0
       '@octokit/types': 13.5.0
       universal-user-agent: 6.0.1
-    dev: true
+    dev: false
 
   /@octokit/openapi-types@20.0.0:
     resolution:
       {
         integrity: sha512-EtqRBEjp1dL/15V7WiX5LJMIxxkdiGJnabzYx5Apx4FkQIFgAfKumXeYAqqJCj1s+BMX4cPFIFC4OLCR6stlnA==
       }
-    dev: true
+    dev: false
 
   /@octokit/openapi-types@22.2.0:
     resolution:
       {
         integrity: sha512-QBhVjcUa9W7Wwhm6DBFu6ZZ+1/t/oYxqc2tp81Pi41YNuJinbFRx8B133qVOrAaBbF7D/m0Et6f9/pZt9Rc+tg==
       }
-    dev: true
+    dev: false
 
   /@octokit/plugin-paginate-rest@9.2.1(@octokit/core@5.2.0):
     resolution:
@@ -2211,7 +2213,7 @@ packages:
     dependencies:
       '@octokit/core': 5.2.0
       '@octokit/types': 12.6.0
-    dev: true
+    dev: false
 
   /@octokit/plugin-rest-endpoint-methods@10.4.1(@octokit/core@5.2.0):
     resolution:
@@ -2224,7 +2226,7 @@ packages:
     dependencies:
       '@octokit/core': 5.2.0
       '@octokit/types': 12.6.0
-    dev: true
+    dev: false
 
   /@octokit/request-error@5.1.0:
     resolution:
@@ -2236,7 +2238,7 @@ packages:
       '@octokit/types': 13.5.0
       deprecation: 2.3.1
       once: 1.4.0
-    dev: true
+    dev: false
 
   /@octokit/request@8.4.0:
     resolution:
@@ -2249,7 +2251,7 @@ packages:
       '@octokit/request-error': 5.1.0
       '@octokit/types': 13.5.0
       universal-user-agent: 6.0.1
-    dev: true
+    dev: false
 
   /@octokit/types@12.6.0:
     resolution:
@@ -2258,7 +2260,7 @@ packages:
       }
     dependencies:
       '@octokit/openapi-types': 20.0.0
-    dev: true
+    dev: false
 
   /@octokit/types@13.5.0:
     resolution:
@@ -2267,7 +2269,7 @@ packages:
       }
     dependencies:
       '@octokit/openapi-types': 22.2.0
-    dev: true
+    dev: false
 
   /@pkgr/core@0.1.1:
     resolution:
@@ -2974,7 +2976,7 @@ packages:
       {
         integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==
       }
-    dev: true
+    dev: false
 
   /brace-expansion@1.1.11:
     resolution:
@@ -3391,7 +3393,7 @@ packages:
       {
         integrity: sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==
       }
-    dev: true
+    dev: false
 
   /dequal@2.0.3:
     resolution:
@@ -5968,7 +5970,6 @@ packages:
       }
     dependencies:
       wrappy: 1.0.2
-    dev: true
 
   /onetime@5.1.2:
     resolution:
@@ -6815,6 +6816,7 @@ packages:
         integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==
       }
     engines: { node: '>=0.6.11 <=0.7.0 || >=0.7.3' }
+    dev: false
 
   /type-check@0.4.0:
     resolution:
@@ -6921,6 +6923,7 @@ packages:
       }
     engines: { node: '>=14.17' }
     hasBin: true
+    dev: true
 
   /unbox-primitive@1.0.2:
     resolution:
@@ -6949,6 +6952,7 @@ packages:
     engines: { node: '>=14.0' }
     dependencies:
       '@fastify/busboy': 2.1.1
+    dev: false
 
   /unicode-canonical-property-names-ecmascript@2.0.0:
     resolution:
@@ -6990,7 +6994,7 @@ packages:
       {
         integrity: sha512-yCzhz6FN2wU1NiiQRogkTQszlQSlpWaw8SvVegAc+bDxbzHgh1vX8uIe8OYyMH6DwH+sdTJsgMl36+mSMdRJIQ==
       }
-    dev: true
+    dev: false
 
   /update-browserslist-db@1.1.0(browserslist@4.23.2):
     resolution:
@@ -7140,7 +7144,6 @@ packages:
       {
         integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
       }
-    dev: true
 
   /write-file-atomic@4.0.2:
     resolution:
