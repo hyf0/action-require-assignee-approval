@@ -29215,13 +29215,15 @@ exports.run = async function run() {
     return
     // Assignee is only meaningful on PRs
   }
-  core.info(`Continue ${githubToken}`)
-
   const octokit = github.getOctokit(githubToken)
 
-  // You can also pass in additional options as a second parameter to getOctokit
-  // const octokit = github.getOctokit(myToken, {userAgent: "MyActionVersion1"});
-  const { data: reviews } = await octokit.rest.pulls.listReviews()
+  const pull_number = context.payload.pull_request.number
+
+  const { data: reviews } = await octokit.rest.pulls.listReviews({
+    pull_number,
+    owner: context.repo.owner,
+    repo: context.repo.repo
+  })
 
   const approvers = new Set(
     R.pipe(
@@ -29232,10 +29234,12 @@ exports.run = async function run() {
     )
   )
 
+  core.info(`Approvers: ${Array.from(approvers).join(', ')}`)
+
   const { data: pullRequest } = await octokit.rest.pulls.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    pull_number: context.payload.pull_request.number,
+    pull_number,
     mediaType: {
       format: 'diff'
     }
