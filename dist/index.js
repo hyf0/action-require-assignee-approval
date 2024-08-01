@@ -29245,6 +29245,8 @@ exports.run = async function run() {
     }
   })
 
+  core.debug(`Pull request: ${JSON.stringify(pullRequest, null, 2)}`)
+
   const assignees = pullRequest.assignees ?? []
 
   if (assignees.length === 0 && !allowNoAssign) {
