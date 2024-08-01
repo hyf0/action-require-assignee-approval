@@ -17,10 +17,6 @@ function getBooleanInput(name, defaultValue) {
 }
 
 exports.run = async function run() {
-  // This should be a token with access to your repository scoped in as a secret.
-  // The YML workflow will need to set myToken with the GitHub Secret Token
-  // myToken: ${{ secrets.GITHUB_TOKEN }}
-  // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
   const githubToken = process.env.GITHUB_TOKEN
 
   const config = {
@@ -40,10 +36,10 @@ exports.run = async function run() {
   }
   const octokit = github.getOctokit(githubToken)
 
-  const pull_number = context.payload.pull_request.number
+  const pullNumber = context.payload.pull_request.number
 
   const { data: reviews } = await octokit.rest.pulls.listReviews({
-    pull_number,
+    pull_number: pullNumber,
     owner: context.repo.owner,
     repo: context.repo.repo
   })
@@ -62,7 +58,7 @@ exports.run = async function run() {
   const { data: pullRequest } = await octokit.rest.pulls.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    pull_number
+    pull_number: pullNumber
   })
 
   const assignees = R.pipe(

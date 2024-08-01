@@ -7,6 +7,7 @@ request.
 - If any assignee has not approved the pull request, the action will fail.
 - If the pull request has no assignee, the action will pass.
   - You could disable this behavior by setting `allow-no-assign` to `false`.
+- If the action isn't triggered by a pull request, the action will pass.
 
 # Usage
 
@@ -36,9 +37,8 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Test Local Action
-        id: test-action
-        uses: todo
+      - name: Require assignee approval
+        uses: hyf0/action-require-assignee-approval@v1
         with:
           allow-no-assign: true # optional, default is `true`
         env:
