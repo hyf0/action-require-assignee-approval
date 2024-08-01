@@ -29203,7 +29203,6 @@ exports.run = async function run() {
   const githubToken = process.env.GITHUB_TOKEN
 
   const allowNoAssign = true
-
   const context = github.context
 
   if (!githubToken) {
