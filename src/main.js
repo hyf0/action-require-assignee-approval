@@ -24,7 +24,7 @@ exports.run = async function run() {
   const githubToken = process.env.GITHUB_TOKEN
 
   const config = {
-    allowNoAssign: getBooleanInput('allowNoAssign', true)
+    allowNoAssign: getBooleanInput('allow-no-assign', true)
   }
 
   const context = github.context
