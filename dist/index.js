@@ -29239,10 +29239,7 @@ exports.run = async function run() {
   const { data: pullRequest } = await octokit.rest.pulls.get({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    pull_number,
-    mediaType: {
-      format: 'diff'
-    }
+    pull_number
   })
 
   core.info(`Pull request: ${JSON.stringify(pullRequest.assignee, null, 2)}`)
