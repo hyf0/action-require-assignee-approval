@@ -61,6 +61,10 @@ exports.run = async function run() {
     return
   }
 
+  core.info(
+    `Assignees: ${assignees.map(assignee => assignee.login).join(', ')}`
+  )
+
   const assigneesNotApproved = assignees.filter(assignee =>
     approvers.has(assignee.login)
   )
