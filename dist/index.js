@@ -29245,7 +29245,10 @@ exports.run = async function run() {
   core.info(`Pull request: ${JSON.stringify(pullRequest.assignee, null, 2)}`)
   core.info(`Pull request: ${JSON.stringify(pullRequest.assignees, null, 2)}`)
 
-  const assignees = pullRequest.assignees ?? []
+  const assignees = R.pipe(
+    pullRequest.assignees ?? [],
+    R.map(assignee => assignee.login)
+  )
 
   if (assignees.length === 0 && !allowNoAssign) {
     core.setFailed(
@@ -29257,13 +29260,11 @@ exports.run = async function run() {
   core.info(`Assignees: [${assignees}]`)
 
   const assigneesNotApproved = assignees.filter(assignee =>
-    approvers.has(assignee.login)
+    approvers.has(assignee)
   )
 
   if (assigneesNotApproved.length > 0) {
-    core.setFailed(
-      `Require assignees ${assigneesNotApproved.map(assignee => assignee.login).join(', ')} to approved the PR.`
-    )
+    core.setFailed(`Require assignees ${assignees} to approved the PR.`)
     return
   }
 }
