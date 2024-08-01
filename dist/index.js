@@ -29245,17 +29245,16 @@ exports.run = async function run() {
     }
   })
 
-  if (!pullRequest.assignees) {
-    core.setFailed("Can't get assignees from pull request.")
+  const assignees = pullRequest.assignees ?? []
+
+  if (assignees.length === 0 && !allowNoAssign) {
+    core.setFailed(
+      'No assignees found on pull request. And `allowNoAssign` is false.'
+    )
     return
   }
 
-  if (pullRequest.assignees.length === 0 && !allowNoAssign) {
-    core.setFailed('No assignees found on pull request.')
-    return
-  }
-
-  const assigneesNotApproved = pullRequest.assignees.filter(assignee =>
+  const assigneesNotApproved = assignees.filter(assignee =>
     approvers.has(assignee.login)
   )
 
