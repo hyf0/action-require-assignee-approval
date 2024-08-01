@@ -9,15 +9,11 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-
 jobs:
   test-action:
     name: GitHub Actions Test
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pull-requests: read
     steps:
       - name: Checkout

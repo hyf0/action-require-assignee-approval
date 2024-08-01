@@ -29195,6 +29195,20 @@ const github = __nccwpck_require__(5942)
 const core = __nccwpck_require__(9093)
 const R = __nccwpck_require__(7722)
 
+/**
+ * Get the input value from the workflow file.
+ * @param {string} name The name of the input.
+ * @param {boolean} defaultValue The default value of the input.
+ * @returns {boolean} The value of the input.
+ */
+function getBooleanInput(name, defaultValue) {
+  const value = core.getInput(name)
+  if (value === '') {
+    return defaultValue
+  }
+  return value === 'true'
+}
+
 exports.run = async function run() {
   // This should be a token with access to your repository scoped in as a secret.
   // The YML workflow will need to set myToken with the GitHub Secret Token
@@ -29202,7 +29216,10 @@ exports.run = async function run() {
   // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
   const githubToken = process.env.GITHUB_TOKEN
 
-  const allowNoAssign = true
+  const config = {
+    allowNoAssign: getBooleanInput('allowNoAssign', true)
+  }
+
   const context = github.context
 
   if (!githubToken) {
@@ -29213,7 +29230,6 @@ exports.run = async function run() {
   if (context.eventName !== 'pull_request' || !context.payload.pull_request) {
     core.info('Bailout: Not a pull request.')
     return
-    // Assignee is only meaningful on PRs
   }
   const octokit = github.getOctokit(githubToken)
 
@@ -29242,15 +29258,12 @@ exports.run = async function run() {
     pull_number
   })
 
-  core.info(`Pull request: ${JSON.stringify(pullRequest.assignee, null, 2)}`)
-  core.info(`Pull request: ${JSON.stringify(pullRequest.assignees, null, 2)}`)
-
   const assignees = R.pipe(
     pullRequest.assignees ?? [],
     R.map(assignee => assignee.login)
   )
 
-  if (assignees.length === 0 && !allowNoAssign) {
+  if (assignees.length === 0 && !config.allowNoAssign) {
     core.setFailed(
       'No assignees found on pull request. And `allowNoAssign` is false.'
     )
