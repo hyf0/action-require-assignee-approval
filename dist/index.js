@@ -29259,8 +29259,8 @@ exports.run = async function run() {
 
   core.info(`Assignees: [${assignees}]`)
 
-  const assigneesNotApproved = assignees.filter(assignee =>
-    approvers.has(assignee)
+  const assigneesNotApproved = assignees.filter(
+    assignee => !approvers.has(assignee)
   )
 
   if (assigneesNotApproved.length > 0) {
