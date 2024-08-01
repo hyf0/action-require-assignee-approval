@@ -52,7 +52,7 @@ exports.run = async function run() {
     }
   })
 
-  core.debug(`Pull request: ${JSON.stringify(pullRequest, null, 2)}`)
+  core.info(`Pull request: ${JSON.stringify(pullRequest, null, 2)}`)
 
   const assignees = pullRequest.assignees ?? []
 
