@@ -22,8 +22,7 @@ exports.run = async function run() {
     return
     // Assignee is only meaningful on PRs
   }
-  
-  core.info(`Continue ${githubToken}`)
+
   const octokit = github.getOctokit(githubToken)
 
   // You can also pass in additional options as a second parameter to getOctokit

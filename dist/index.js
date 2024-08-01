@@ -29211,6 +29211,7 @@ exports.run = async function run() {
   }
 
   if (context.eventName !== 'pull_request' || !context.payload.pull_request) {
+    core.info('Bailout: Not a pull request.')
     return
     // Assignee is only meaningful on PRs
   }
