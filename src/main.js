@@ -8,7 +8,7 @@ exports.run = async function run() {
   // myToken: ${{ secrets.GITHUB_TOKEN }}
   // https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#about-the-github_token-secret
   const githubToken = process.env.GITHUB_TOKEN
-  
+
   const allowNoAssign = true
   const context = github.context
 
@@ -18,10 +18,12 @@ exports.run = async function run() {
   }
 
   if (context.eventName !== 'pull_request' || !context.payload.pull_request) {
+    core.info('Bailout: Not a pull request.')
     return
     // Assignee is only meaningful on PRs
   }
-
+  
+  core.info(`Continue ${githubToken}`)
   const octokit = github.getOctokit(githubToken)
 
   // You can also pass in additional options as a second parameter to getOctokit
