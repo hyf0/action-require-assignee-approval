@@ -29245,7 +29245,8 @@ exports.run = async function run() {
     }
   })
 
-  core.info(`Pull request: ${JSON.stringify(pullRequest, null, 2)}`)
+  core.info(`Pull request: ${JSON.stringify(pullRequest.assignee, null, 2)}`)
+  core.info(`Pull request: ${JSON.stringify(pullRequest.assignees, null, 2)}`)
 
   const assignees = pullRequest.assignees ?? []
 
