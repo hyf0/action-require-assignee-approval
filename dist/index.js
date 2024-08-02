@@ -29222,6 +29222,8 @@ exports.run = async function run() {
     )
   }
 
+  core.info(`Config: ${JSON.stringify(config, null, 2)}`)
+
   const context = github.context
 
   if (!githubToken) {
@@ -29274,8 +29276,8 @@ exports.run = async function run() {
 
   core.info(`Assignees: [${assignees}]`)
 
-  const bypassed = R.find(assignees, assignee =>
-    config.bypassBy.includes(assignee)
+  const bypassed = R.find([...approvers], approver =>
+    config.bypassBy.includes(approver)
   )
 
   if (bypassed) {
