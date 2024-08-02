@@ -21,7 +21,12 @@ exports.run = async function run() {
 
   const config = {
     allowNoAssign: getBooleanInput('allow-no-assign', true),
-    bypassBy: R.pipe(core.getInput('bypass-by'), R.split(','), R.map(s => s.trim()), R.filter(s => s !== '')),
+    bypassBy: R.pipe(
+      core.getInput('bypass-by'),
+      R.split(','),
+      R.map(s => s.trim()),
+      R.filter(s => s !== '')
+    )
   }
 
   const context = github.context
@@ -76,15 +81,14 @@ exports.run = async function run() {
 
   core.info(`Assignees: [${assignees}]`)
 
-  const bypassed = R.find(
-    assignees,
-    assignee => config.bypassBy.includes(assignee)
+  const bypassed = R.find(assignees, assignee =>
+    config.bypassBy.includes(assignee)
   )
 
- if (bypassed) {
+  if (bypassed) {
     core.info(`Bypassed by ${bypassed}.`)
     return
- }
+  }
 
   const assigneesNotApproved = assignees.filter(
     assignee => !approvers.has(assignee)
