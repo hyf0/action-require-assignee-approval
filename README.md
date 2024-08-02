@@ -14,7 +14,7 @@ request.
 
 # Usage
 
-Time to show you care about some PRs and make sure it's won't be merged
+Time to show you care about some PRs and make sure they won't be merged
 accidentally without your approval.
 
 ```yml
