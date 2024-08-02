@@ -11,6 +11,9 @@ request.
 
 # Usage
 
+Time to show you care about some PRs and make sure it's won't be merged
+accidentally without your approval.
+
 ```yml
 name: CI
 
@@ -27,8 +30,8 @@ permissions:
   contents: read
 
 jobs:
-  test-action:
-    name: GitHub Actions Test
+  require-assignee-approval:
+    name: Check assignees' approval
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -37,7 +40,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Require assignee approval
+      - name: Check assignees' approval
         uses: hyf0/action-require-assignee-approval@v1
         with:
           allow-no-assign: true # optional, default is `true`

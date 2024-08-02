@@ -29213,7 +29213,13 @@ exports.run = async function run() {
   const githubToken = process.env.GITHUB_TOKEN
 
   const config = {
-    allowNoAssign: getBooleanInput('allow-no-assign', true)
+    allowNoAssign: getBooleanInput('allow-no-assign', true),
+    bypassBy: R.pipe(
+      core.getInput('bypass-by'),
+      R.split(','),
+      R.map(s => s.trim()),
+      R.filter(s => s !== '')
+    )
   }
 
   const context = github.context
@@ -29267,6 +29273,15 @@ exports.run = async function run() {
   }
 
   core.info(`Assignees: [${assignees}]`)
+
+  const bypassed = R.find(assignees, assignee =>
+    config.bypassBy.includes(assignee)
+  )
+
+  if (bypassed) {
+    core.info(`Bypassed by ${bypassed}.`)
+    return
+  }
 
   const assigneesNotApproved = assignees.filter(
     assignee => !approvers.has(assignee)
