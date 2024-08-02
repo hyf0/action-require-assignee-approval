@@ -7,6 +7,9 @@ request.
 - If any assignee has not approved the pull request, the action will fail.
 - If the pull request has no assignee, the action will pass.
   - You could disable this behavior by setting `allow-no-assign` to `false`.
+- You could bypass the action by setting `bypass-by` with a list of users. If
+  any one in the bypass list has approved the pull request, the action will
+  pass.
 - If the action isn't triggered by a pull request, the action will pass.
 
 # Usage
@@ -41,6 +44,7 @@ jobs:
         uses: hyf0/action-require-assignee-approval@v1
         with:
           allow-no-assign: true # optional, default is `true`
+          bypass-by: 'github-actions[bot]', 'dependabot[bot]' # optional, default is empty
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
